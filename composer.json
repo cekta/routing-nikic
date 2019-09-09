@@ -1,0 +1,22 @@
+{
+    "name": "cekta/routing-nikic",
+    "description": "",
+    "type": "library",
+    "require": {
+        "cekta/routing": "@dev",
+        "nikic/fast-route": "^1.3"
+    },
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Evgeniy Kuvshinov",
+            "email": "smpl@itmywork.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Cekta\\Routing\\Nikic\\": "src/"
+        }
+    }
+}
