@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Cekta\Routing\Nikic;
 
-class NotFound
+class Handler
 {
     /**
      * @var string
@@ -20,11 +20,20 @@ class NotFound
         $this->middlewares = $middlewares;
     }
 
+    public static function __set_state(array $state): self
+    {
+        return new static($state['handler'], ...$state['middlewares']);
+    }
+
+
     public function getHandler(): string
     {
         return $this->handler;
     }
 
+    /**
+     * @return string[]
+     */
     public function getMiddlewares(): array
     {
         return $this->middlewares;
