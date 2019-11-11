@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Cekta\Routing\Nikic;
@@ -17,7 +18,7 @@ class DispatcherBuilder
     public const STRATEGY_GROUPCOUNTBASED = 1;
     public const STRATEGY_GROUPPOSBASED = 2;
     public const STRATEGY_MARKBASED = 3;
-    private const strategies = [
+    private const STRATEGIES = [
         [
             'Dispatcher' => '\FastRoute\Dispatcher\CharCountBased',
             'DataGenerator' => '\FastRoute\DataGenerator\CharCountBased',
@@ -54,7 +55,7 @@ class DispatcherBuilder
 
     public function setStrategy(int $strategy): self
     {
-        if (!array_key_exists($strategy, self::strategies)) {
+        if (!array_key_exists($strategy, self::STRATEGIES)) {
             throw new InvalidArgumentException('Strategy must be in the strategies list');
         }
         $this->strategy = $strategy;
@@ -105,7 +106,7 @@ class DispatcherBuilder
         } else {
             $data = $this->getDataFromCollector();
         }
-        $name = self::strategies[$this->strategy]['Dispatcher'];
+        $name = self::STRATEGIES[$this->strategy]['Dispatcher'];
         return new $name($data);
     }
 
@@ -143,7 +144,7 @@ class DispatcherBuilder
 
     private function getDataGenerator(): DataGenerator
     {
-        $name = self::strategies[$this->strategy]['DataGenerator'];
+        $name = self::STRATEGIES[$this->strategy]['DataGenerator'];
         return new $name();
     }
 
@@ -161,5 +162,4 @@ class DispatcherBuilder
         ];
         return $this;
     }
-
 }

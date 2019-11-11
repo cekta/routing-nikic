@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Cekta\Routing\Nikic;
@@ -22,8 +23,11 @@ class Result implements ResultInterface
      */
     private $middlewares;
 
-    public function __construct(RequestHandlerInterface $handler, array $attributes, MiddlewareInterface ...$middlewares)
-    {
+    public function __construct(
+        RequestHandlerInterface $handler,
+        array $attributes,
+        MiddlewareInterface ...$middlewares
+    ) {
         $this->handler = $handler;
         $this->attributes = $attributes;
         $this->middlewares = $middlewares;

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Cekta\Routing\Nikic;
@@ -22,5 +23,4 @@ class ProviderHandler
     {
         return $this->container->get($handleName);
     }
-
 }
