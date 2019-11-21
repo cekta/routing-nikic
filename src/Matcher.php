@@ -44,7 +44,11 @@ class Matcher implements MatcherInterface
 
     public function match(ServerRequestInterface $request): ResultInterface
     {
-        $routeInfo = $this->dispatcher->dispatch($request->getMethod(), $request->getRequestTarget());
+        $uri = $request->getRequestTarget();
+        if (false !== $pos = strpos($uri, '?')) {
+            $uri = substr($uri, 0, $pos);
+        }
+        $routeInfo = $this->dispatcher->dispatch($request->getMethod(), $uri);
         if ($routeInfo[0] == Dispatcher::FOUND) {
             $result = $this->getResultFromRoute($routeInfo);
         } else {
