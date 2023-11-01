@@ -18,13 +18,13 @@ class Matcher implements MatcherInterface
      */
     private $dispatcher;
     /**
-     * @var ProviderHandler
+     * @var HandlerLocator
      */
-    private $providerHandler;
+    private $handlerLocator;
     /**
-     * @var ProviderMiddleware
+     * @var MiddlewareLocator
      */
-    private $providerMiddleware;
+    private $middlewareLocator;
     /**
      * @var Handler
      */
@@ -33,12 +33,12 @@ class Matcher implements MatcherInterface
     public function __construct(
         Handler $notFound,
         Dispatcher $dispatcher,
-        ProviderHandler $providerHandler,
-        ProviderMiddleware $providerMiddleware
+        HandlerLocator $handlerLocator,
+        MiddlewareLocator $middlewareLocator
     ) {
         $this->dispatcher = $dispatcher;
-        $this->providerHandler = $providerHandler;
-        $this->providerMiddleware = $providerMiddleware;
+        $this->handlerLocator = $handlerLocator;
+        $this->middlewareLocator = $middlewareLocator;
         $this->notFound = $notFound;
     }
 
@@ -53,7 +53,7 @@ class Matcher implements MatcherInterface
             $result = $this->getResultFromRoute($routeInfo);
         } else {
             $middlewares = $this->createMiddlewares(...$this->notFound->getMiddlewares());
-            $result = new Result($this->providerHandler->get($this->notFound->getHandler()), [], ...$middlewares);
+            $result = new Result($this->handlerLocator->get($this->notFound->getHandler()), [], ...$middlewares);
         }
         return $result;
     }
@@ -65,7 +65,7 @@ class Matcher implements MatcherInterface
             throw new InvalidArgumentException('Route info must contain Handler');
         }
         return new Result(
-            $this->providerHandler->get($handler->getHandler()),
+            $this->handlerLocator->get($handler->getHandler()),
             $routeInfo[2],
             ...$this->createMiddlewares(...$handler->getMiddlewares())
         );
@@ -80,7 +80,7 @@ class Matcher implements MatcherInterface
     {
         $middlewares = [];
         foreach ($middlewareNames as $middlewareName) {
-            $middlewares[] = $this->providerMiddleware->get($middlewareName);
+            $middlewares[] = $this->middlewareLocator->get($middlewareName);
         };
         return $middlewares;
     }
